@@ -11,6 +11,11 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import orebiReducer from "./orebiSlice";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
+import rootReducer from "./rootReducer";
+
 
 const persistConfig = {
   key: "root",
@@ -29,5 +34,23 @@ export const store = configureStore({
       },
     }),
 });
+
+
+// const initialState = {};
+// const middleware = [thunk];
+
+// Wrap your rootReducer with Redux Persist
+// const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// Create the Redux store using Redux Toolkit's configureStore
+// export const store = configureStore({
+//   reducer: { orebiReducer: persistedReducer },
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware({
+//       serializableCheck: {
+//         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+//       },
+//     }).concat(middleware), // Add your existing middleware here
+// });
 
 export let persistor = persistStore(store);
