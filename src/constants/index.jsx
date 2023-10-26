@@ -531,6 +531,5 @@ export const paginationItems = [
 ];
 // =================== PaginationItems End here =================
 
-
 // ==================== API URL ======================
-export const URLst = "http://localhost:5000/api/v1/"
+export const URLst = "http://localhost:5000/api/v1/";

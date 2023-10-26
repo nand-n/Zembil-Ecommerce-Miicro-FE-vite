@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
 import * as actionTypes from './usersActionType'
-import { URLst } from '../../constants/urls'
 import { errorMessage, successMessage } from '../Messages/messagesAction'
+import { URLst } from '../../constants'
 
 export const userStart =()=>{
     return {
