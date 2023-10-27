@@ -45,6 +45,12 @@ export const userCreateSuccess=(data)=>{
         data:data
     }
 }
+export const userLoginSuccess=(data)=>{
+    return {
+        type:actionTypes.USER_LOGIN,
+        data:data
+    }
+}
 
 export const userUpdateSuccess=(data)=>{
     return {
@@ -144,7 +150,8 @@ export const userCreate=(
             url:`${URLst}users`,
             method:'post',
             data:value,
-            headers: { "Access-Control-Allow-Origin": "*" },
+            headers: {  'Content-Type': 'multipart/form-data'},
+            mode:"no-cors"
         })
         .then((res)=>{
             console.log("Created Success user" , res.data);
@@ -162,8 +169,44 @@ export const userCreate=(
                 error=err.message + "Faild request, Try Again!"
             }
             
+            console.log("ErrorError",error);
+
             dispatch(errorMessage(error))
         })
        
     }
 }
+export const userLogin=(
+    value, 
+      )=>{
+      return (dispatch)=>{
+          dispatch(userStart())
+          axios({
+              url:`${URLst}users/login`,
+              method:'post',
+              data:value,
+              mode:"no-cors"
+          })
+          .then((res)=>{
+              console.log("Login data",res);              
+              dispatch(userLoginSuccess(res.data))
+              dispatch(successMessage(res.data.message))
+          })
+          .catch((err)=>{
+              dispatch(userFail(err))
+              let error;
+  
+              if(err.response){
+                  error = err.message +" " +  err.response.data
+              }
+              if(err.request){
+                  error=err.message + "Faild request, Try Again!"
+              }
+              
+              console.log("ErrorError",error);
+  
+              dispatch(errorMessage(error))
+          })
+         
+      }
+  }

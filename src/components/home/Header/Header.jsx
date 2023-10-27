@@ -7,6 +7,7 @@ import { logo, logoLight } from "../../../assets/images";
 import Image from "../../designLayouts/Image";
 import { navBarList } from "../../../constants";
 import Flex from "../../designLayouts/Flex";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(true);
@@ -26,6 +27,8 @@ const Header = () => {
     window.addEventListener("resize", ResponsiveMenu);
   }, []);
 
+  const userinfo = useSelector((state) => state.userReducer.loged_user.user);
+  const token = useSelector((state) => state.userReducer.loged_user.token);
   return (
     <div className="w-full h-20 bg-white sticky top-0 z-50 border-b-[1px] border-b-gray-200">
       <nav className="h-full px-4 max-w-container mx-auto relative">
@@ -148,6 +151,17 @@ const Header = () => {
               </div>
             )}
           </div>
+          {token && showMenu && (
+            <Link
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-300 overflow-hidden "
+              to="/dashboard/user"
+            >
+              <Image
+                className="w-full  h-full object-cover"
+                imgSrc={"http://" + userinfo?.proPic}
+              />
+            </Link>
+          )}
         </Flex>
       </nav>
     </div>

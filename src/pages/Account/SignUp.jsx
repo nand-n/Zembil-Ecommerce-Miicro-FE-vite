@@ -2,62 +2,38 @@ import React, { useState } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { logoLight } from "../../assets/images";
+import { connect } from "react-redux";
+import { userCreate } from "../../redux";
 
-const SignUp = () => {
+const SignUp = ({ users_loading, users_error, single_user, userCreate }) => {
   // ============= Initial State Start here =============
-  const [clientName, setClientName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
-  const [zip, setZip] = useState("");
+  const [file, setFile] = useState(null);
   const [checked, setChecked] = useState(false);
   // ============= Initial State End here ===============
   // ============= Error Msg Start here =================
-  const [errClientName, setErrClientName] = useState("");
+  const [errName, setErrName] = useState("");
   const [errEmail, setErrEmail] = useState("");
   const [errPhone, setErrPhone] = useState("");
   const [errPassword, setErrPassword] = useState("");
-  const [errAddress, setErrAddress] = useState("");
-  const [errCity, setErrCity] = useState("");
-  const [errCountry, setErrCountry] = useState("");
-  const [errZip, setErrZip] = useState("");
+  const [errFile, setErrFile] = useState("");
+
   // ============= Error Msg End here ===================
   const [successMsg, setSuccessMsg] = useState("");
   // ============= Event Handler Start here =============
   const handleName = (e) => {
-    setClientName(e.target.value);
-    setErrClientName("");
+    setName(e.target.value);
+    setErrName("");
   };
   const handleEmail = (e) => {
     setEmail(e.target.value);
     setErrEmail("");
   };
-  const handlePhone = (e) => {
-    setPhone(e.target.value);
-    setErrPhone("");
-  };
   const handlePassword = (e) => {
     setPassword(e.target.value);
     setErrPassword("");
-  };
-  const handleAddress = (e) => {
-    setAddress(e.target.value);
-    setErrAddress("");
-  };
-  const handleCity = (e) => {
-    setCity(e.target.value);
-    setErrCity("");
-  };
-  const handleCountry = (e) => {
-    setCountry(e.target.value);
-    setErrCountry("");
-  };
-  const handleZip = (e) => {
-    setZip(e.target.value);
-    setErrZip("");
   };
   // ============= Event Handler End here ===============
   // ================= Email Validation start here =============
@@ -71,7 +47,7 @@ const SignUp = () => {
   const handleSignUp = (e) => {
     e.preventDefault();
     if (checked) {
-      if (!clientName) {
+      if (!name) {
         setErrClientName("Enter your name");
       }
       if (!email) {
@@ -81,9 +57,6 @@ const SignUp = () => {
           setErrEmail("Enter a Valid email");
         }
       }
-      if (!phone) {
-        setErrPhone("Enter your phone number");
-      }
       if (!password) {
         setErrPassword("Create a password");
       } else {
@@ -91,41 +64,38 @@ const SignUp = () => {
           setErrPassword("Passwords must be at least 6 characters");
         }
       }
-      if (!address) {
-        setErrAddress("Enter your address");
-      }
-      if (!city) {
-        setErrCity("Enter your city name");
-      }
-      if (!country) {
-        setErrCountry("Enter the country you are residing");
-      }
-      if (!zip) {
-        setErrZip("Enter the zip code of your area");
-      }
+
       // ============== Getting the value ==============
       if (
-        clientName &&
+        name &&
         email &&
         EmailValidation(email) &&
         password &&
         password.length >= 6 &&
-        address &&
-        city &&
-        country &&
-        zip
+        file
+
+        // zip
       ) {
-        setSuccessMsg(
-          `Hello dear ${clientName}, Welcome you to OREBI Admin panel. We received your Sign up request. We are processing to validate your access. Till then stay connected and additional assistance will be sent to you by your mail at ${email}`
-        );
-        setClientName("");
-        setEmail("");
-        setPhone("");
-        setPassword("");
-        setAddress("");
-        setCity("");
-        setCountry("");
-        setZip("");
+        // setSuccessMsg(
+        //   `Hello dear ${clientName}, Welcome you to OREBI Admin panel. We received your Sign up request. We are processing to validate your access. Till then stay connected and additional assistance will be sent to you by your mail at ${email}`
+        // );
+        // setClientName("");
+        // setEmail("");
+        // setPhone("");
+        // setPassword("");
+        // setAddress("");
+        // setCity("");
+        // setCountry("");
+        // setZip("");
+        const data = {
+          name,
+          email,
+          password,
+          file,
+          checked,
+        };
+        console.log("data", data);
+        userCreate(data);
       }
     }
   };
@@ -137,9 +107,7 @@ const SignUp = () => {
             <img src={logoLight} alt="logoImg" className="w-28" />
           </Link>
           <div className="flex flex-col gap-1 -mt-1">
-            <h1 className="font-titleFont text-xl font-medium">
-              Get started for free
-            </h1>
+            <h1 className="font-titleFont text-xl font-medium">Get started</h1>
             <p className="text-base">Create your account to access more</p>
           </div>
           <div className="w-[300px] flex items-start gap-3">
@@ -201,7 +169,8 @@ const SignUp = () => {
         {successMsg ? (
           <div className="w-[500px]">
             <p className="w-full px-4 py-10 text-green-500 font-medium font-titleFont">
-              {successMsg}
+              {/* {successMsg} */}
+              Success
             </p>
             <Link to="/signin">
               <button
@@ -213,7 +182,10 @@ const SignUp = () => {
             </Link>
           </div>
         ) : (
-          <form className="w-full lgl:w-[500px] h-screen flex items-center justify-center">
+          <form
+            typeof=""
+            className="w-full lgl:w-[500px] h-screen flex items-center justify-center"
+          >
             <div className="px-6 py-4 w-full h-[96%] flex flex-col justify-start overflow-y-scroll scrollbar-thin scrollbar-thumb-primeColor">
               <h1 className="font-titleFont underline underline-offset-4 decoration-[1px] font-semibold text-2xl mdl:text-3xl mb-4">
                 Create your account
@@ -226,15 +198,15 @@ const SignUp = () => {
                   </p>
                   <input
                     onChange={handleName}
-                    value={clientName}
+                    value={name}
                     className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
                     type="text"
                     placeholder="eg. John Doe"
                   />
-                  {errClientName && (
+                  {errName && (
                     <p className="text-sm text-red-500 font-titleFont font-semibold px-4">
                       <span className="font-bold italic mr-1">!</span>
-                      {errClientName}
+                      {errName}
                     </p>
                   )}
                 </div>
@@ -257,25 +229,7 @@ const SignUp = () => {
                     </p>
                   )}
                 </div>
-                {/* Phone Number */}
-                <div className="flex flex-col gap-.5">
-                  <p className="font-titleFont text-base font-semibold text-gray-600">
-                    Phone Number
-                  </p>
-                  <input
-                    onChange={handlePhone}
-                    value={phone}
-                    className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
-                    type="text"
-                    placeholder="008801234567891"
-                  />
-                  {errPhone && (
-                    <p className="text-sm text-red-500 font-titleFont font-semibold px-4">
-                      <span className="font-bold italic mr-1">!</span>
-                      {errPhone}
-                    </p>
-                  )}
-                </div>
+
                 {/* Password */}
                 <div className="flex flex-col gap-.5">
                   <p className="font-titleFont text-base font-semibold text-gray-600">
@@ -295,81 +249,32 @@ const SignUp = () => {
                     </p>
                   )}
                 </div>
-                {/* Address */}
-                <div className="flex flex-col gap-.5">
-                  <p className="font-titleFont text-base font-semibold text-gray-600">
-                    Address
-                  </p>
-                  <input
-                    onChange={handleAddress}
-                    value={address}
-                    className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
-                    type="text"
-                    placeholder="road-001, house-115, example area"
-                  />
-                  {errAddress && (
-                    <p className="text-sm text-red-500 font-titleFont font-semibold px-4">
-                      <span className="font-bold italic mr-1">!</span>
-                      {errAddress}
-                    </p>
-                  )}
-                </div>
-                {/* City */}
-                <div className="flex flex-col gap-.5">
-                  <p className="font-titleFont text-base font-semibold text-gray-600">
-                    City
-                  </p>
-                  <input
-                    onChange={handleCity}
-                    value={city}
-                    className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
-                    type="text"
-                    placeholder="Your city"
-                  />
-                  {errCity && (
-                    <p className="text-sm text-red-500 font-titleFont font-semibold px-4">
-                      <span className="font-bold italic mr-1">!</span>
-                      {errCity}
-                    </p>
-                  )}
-                </div>
-                {/* Country */}
-                <div className="flex flex-col gap-.5">
-                  <p className="font-titleFont text-base font-semibold text-gray-600">
-                    Country
-                  </p>
-                  <input
-                    onChange={handleCountry}
-                    value={country}
-                    className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
-                    type="text"
-                    placeholder="Your country"
-                  />
-                  {errCountry && (
-                    <p className="text-sm text-red-500 font-titleFont font-semibold px-4">
-                      <span className="font-bold italic mr-1">!</span>
-                      {errCountry}
-                    </p>
-                  )}
-                </div>
+
                 {/* Zip code */}
                 <div className="flex flex-col gap-.5">
                   <p className="font-titleFont text-base font-semibold text-gray-600">
-                    Zip/Postal code
+                    Profile Image
                   </p>
-                  <input
+                  {/* <input
                     onChange={handleZip}
                     value={zip}
                     className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
                     type="text"
                     placeholder="Your country"
+                  /> */}
+                  <input
+                    filename={file}
+                    onChange={(e) => setFile(e.target.files[0])}
+                    type="file"
+                    accept="image/*"
+                    className="w-full h-8 placeholder:text-sm placeholder:tracking-wide px-4 text-base font-medium placeholder:font-normal rounded-md border-[1px] border-gray-400 outline-none"
                   />
-                  {errZip && (
+                  {/* {errZip && (
                     <p className="text-sm text-red-500 font-titleFont font-semibold px-4">
                       <span className="font-bold italic mr-1">!</span>
                       {errZip}
                     </p>
-                  )}
+                  )} */}
                 </div>
                 {/* Checkbox */}
                 <div className="flex items-start mdl:items-center gap-2">
@@ -411,4 +316,18 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+const mapStateToProps = (state) => {
+  return {
+    users_loading: state.userReducer.users_loading,
+    users_error: state.userReducer.users_error,
+    single_user: state.userReducer.single_user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    userCreate: (data) => dispatch(userCreate(data)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

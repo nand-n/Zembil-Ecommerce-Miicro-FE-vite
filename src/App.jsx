@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   createBrowserRouter,
   RouterProvider,
@@ -5,6 +6,8 @@ import {
   createRoutesFromElements,
   Route,
   ScrollRestoration,
+  BrowserRouter,
+  Routes,
 } from "react-router-dom";
 import Footer from "./components/home/Footer/Footer";
 import FooterBottom from "./components/home/Footer/FooterBottom";
@@ -25,6 +28,7 @@ import Shop from "./pages/Shop/Shop";
 import Overview from "./pages/Dashboard";
 import Page404 from "./pages/Notfound";
 import Message from "./components/Message/Message";
+import { useSelector } from "react-redux";
 
 const Layout = () => {
   return (
@@ -32,46 +36,49 @@ const Layout = () => {
       <Header />
       <HeaderBottom />
       <SpecialCase />
-      <ScrollRestoration />
+      {/* <ScrollRestoration /> */}
       <Outlet />
       <Footer />
       <FooterBottom />
     </div>
   );
 };
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route>
-      <Route path="/" element={<Layout />}>
-        {/* ==================== Header Navlink Start here =================== */}
-        <Route index element={<Home />}></Route>
-        <Route path="/shop" element={<Shop />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/contact" element={<Contact />}></Route>
-        <Route path="/journal" element={<Journal />}></Route>
-        {/* ==================== Header Navlink End here ===================== */}
-        <Route path="/offer" element={<Offer />}></Route>
-        <Route path="/product/:_id" element={<ProductDetails />}></Route>
-        <Route path="/cart" element={<Cart />}></Route>
-        <Route path="/paymentgateway" element={<Payment />}></Route>
-      </Route>
-      <Route path="/signup" element={<SignUp />}></Route>
-      <Route path="/signin" element={<SignIn />}></Route>
-      <Route path="/dashboard/">
-        <Route path="overview" element={<Overview />} />
-        <Route path="user" element={<Overview />} />
-        <Route path="product" element={<Overview />} />
-      </Route>
-      <Route path="*" element={<Page404 />} />
-    </Route>
-  )
-);
-
 function App() {
+  const token = useSelector((state) => state.userReducer.loged_user.token);
+  console.log("Tocken ", token);
   return (
     <div className="font-bodyFont">
-      {/* <Message /> */}
-      <RouterProvider router={router} />
+      <Message />
+      <BrowserRouter>
+        <Routes>
+          <Route>
+            <Route path="/" element={<Layout />}>
+              {/* ==================== Header Navlink Start here =================== */}
+              <Route index element={<Home />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              {/* ==================== Header Navlink End here ===================== */}
+              <Route path="/offer" element={<Offer />} />
+              <Route path="/product/:_id" element={<ProductDetails />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/paymentgateway" element={<Payment />} />
+            </Route>
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
+            {/* ==================== Dashboard Routes Start here ===================== */}
+            {token && (
+              <Route path="/dashboard/">
+                <Route path="overview" element={<Overview />} />
+                <Route path="user" element={<Overview />} />
+                <Route path="product" element={<Overview />} />
+              </Route>
+            )}
+            {/* ==================== Dashboard Routes End here ===================== */}
+            <Route path="*" element={<Page404 />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

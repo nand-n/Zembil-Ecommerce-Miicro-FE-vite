@@ -20,7 +20,7 @@ function Notification({ notifications, handleNotificationClose }) {
             <div className="flex mb-2">
               <div className="m-auto h-14 max-w-md ">
                 <div
-                  className={` rounded-lg bg-bg border-gray-300 border p-3 shadow-lg`}
+                  className={` rounded-lg bg-gray-200 border-gray-300 border p-3 shadow-lg`}
                 >
                   <div className="flex flex-row">
                     <div className="px-2">

@@ -8,7 +8,8 @@ const initialState={
     users:[],
     single_user:{},
     user_delete:[],
-    user_create:[]
+    user_create:[],
+    loged_user:{}
     
 }
 
@@ -53,10 +54,10 @@ const delUser =(state,action)=>{
     }
 }
 
-const creUser =(state,action)=>{
+const loginUser =(state,action)=>{
     return {
         ...state,
-        user_create:action.data
+        loged_user:action.data
     }
 }
 
@@ -75,6 +76,8 @@ export const userReducer= (state = initialState , action ) =>{
             return delUser(state,action)
         case actionTypes.USER_CREATE:
             return creUser(state,action)
+        case actionTypes.USER_LOGIN:
+            return loginUser(state,action)
         default:
             return state
     }

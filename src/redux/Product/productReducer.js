@@ -69,8 +69,8 @@ export const productReducer = (state = initialState , action)=>{
             return productUpdateSuccess(state,action)
             case actionTypes.PRODUCT_DELETE:
                 return productDeleteSuccess(state,action)
-                case actionTypes.PRODUCT_FAIL:
-                    return productFail(state,action)
+            case actionTypes.PRODUCT_FAIL:
+                return productFail(state,action)
         default:
             return state
     }

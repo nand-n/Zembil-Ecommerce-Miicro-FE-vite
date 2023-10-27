@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import classNames from "classnames";
 import Logo from "../../../assets/images/orebiLogo.png";
 import { DASHBOARD_SIDEBAR_LINKS } from "../../../constants";
+import { useSelector } from "react-redux";
 
 const linkClasses =
   "flex items-center gap-2 px-3 py-2 font-medium hover:no-underline h-14";

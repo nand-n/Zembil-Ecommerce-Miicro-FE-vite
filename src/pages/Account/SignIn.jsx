@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { logoLight } from "../../assets/images";
+import { connect } from "react-redux";
+import { userLogin } from "../../redux";
 
-const SignIn = () => {
+const SignIn = ({ users_loading, users_error, loged_user, userLogin }) => {
   // ============= Initial State Start here =============
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,13 +38,20 @@ const SignIn = () => {
     }
     // ============== Getting the value ==============
     if (email && password) {
-      setSuccessMsg(
-        `Hello dear, Thank you for your attempt. We are processing to validate your access. Till then stay connected and additional assistance will be sent to you by your mail at ${email}`
-      );
-      setEmail("");
-      setPassword("");
+      // setSuccessMsg(
+      //   `Hello dear, Thank you for your attempt. We are processing to validate your access. Till then stay connected and additional assistance will be sent to you by your mail at ${email}`
+      // );
+      // setEmail("");
+      // setPassword("");
+      console.log("User Login Data:", { email, password });
+      userLogin({
+        email,
+        password,
+      });
     }
   };
+
+  console.log("Logged User Data", loged_user);
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <div className="w-1/2 hidden lgl:inline-flex h-full text-white">
@@ -198,4 +207,18 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+const mapStateToProps = (state) => {
+  return {
+    users_loading: state.userReducer.users_loading,
+    users_error: state.userReducer.users_error,
+    loged_user: state.userReducer.loged_user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    userLogin: (data) => dispatch(userLogin(data)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

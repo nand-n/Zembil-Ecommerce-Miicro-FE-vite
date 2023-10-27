@@ -1,9 +1,11 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../redux/orebiSlice";
 
 const ProductInfo = ({ productInfo }) => {
   const dispatch = useDispatch();
+  const token = useSelector((state) => state.userReducer.loged_user.token);
+
   return (
     <div className="flex flex-col gap-5">
       <h2 className="text-4xl font-semibold">{productInfo.productName}</h2>
@@ -13,24 +15,50 @@ const ProductInfo = ({ productInfo }) => {
       <p className="font-medium text-lg">
         <span className="font-normal">Colors:</span> {productInfo.color}
       </p>
-      <button
-        onClick={() =>
-          dispatch(
-            addToCart({
-              _id: productInfo.id,
-              name: productInfo.productName,
-              quantity: 1,
-              image: productInfo.img,
-              badge: productInfo.badge,
-              price: productInfo.price,
-              colors: productInfo.color,
-            })
-          )
-        }
-        className="w-full py-4 bg-primeColor hover:bg-black duration-300 text-white text-lg font-titleFont"
-      >
-        Add to Cart
-      </button>
+      {token ? (
+        <>
+          <button
+            onClick={() =>
+              dispatch(
+                addToCart({
+                  _id: productInfo.id,
+                  name: productInfo.productName,
+                  quantity: 1,
+                  image: productInfo.img,
+                  badge: productInfo.badge,
+                  price: productInfo.price,
+                  colors: productInfo.color,
+                })
+              )
+            }
+            className="w-full py-4 bg-primeColor hover:bg-black duration-300 text-white text-lg font-titleFont"
+          >
+            Add to Cart
+          </button>
+        </>
+      ) : (
+        <>
+          <button
+            onClick={() =>
+              dispatch(
+                addToCart({
+                  _id: productInfo.id,
+                  name: productInfo.productName,
+                  quantity: 1,
+                  image: productInfo.img,
+                  badge: productInfo.badge,
+                  price: productInfo.price,
+                  colors: productInfo.color,
+                })
+              )
+            }
+            className="w-full py-4 bg-primeColor hover:bg-black duration-300 text-white text-lg font-titleFont"
+          >
+            Buy Now
+          </button>
+        </>
+      )}
+
       <p className="font-normal text-sm">
         <span className="text-base font-medium"> Categories:</span> Spring
         collection, Streetwear, Women Tags: featured SKU: N/A

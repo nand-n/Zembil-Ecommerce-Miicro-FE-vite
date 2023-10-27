@@ -38,10 +38,11 @@ export const navBarList = [
     title: "Contact",
     link: "contact",
   },
+
   {
     _id: 1005,
-    title: "Journal",
-    link: "/journal",
+    title: "Dashboard",
+    link: "/dashboard/overview",
   },
 ];
 //==================== SideBarList Start here ===================
@@ -69,6 +70,7 @@ export const DASHBOARD_SIDEBAR_LINKS = [
   },
 ];
 // =================== NavBarList End here ======================
+
 // =================== Special Offer data Start here ============
 export const SplOfferData = [
   {
@@ -532,4 +534,5 @@ export const paginationItems = [
 // =================== PaginationItems End here =================
 
 // ==================== API URL ======================
-export const URLst = "http://localhost:5000/api/v1/";
+// export const URLst = "http://172.16.33.175:8000/";
+export const URLst = "http://localhost:8000/";

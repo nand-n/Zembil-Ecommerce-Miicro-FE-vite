@@ -56,7 +56,7 @@ export const getproductList=()=>{
         dispatch(productStart())
         axios({
             method:'get',
-            url:URLst+'products'
+            url:URLst+'product'
         })
         .then((res)=>{
             dispatch(productSuccess(res.data))

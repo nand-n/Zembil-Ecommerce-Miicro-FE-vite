@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Heading from "../Products/Heading";
 import Product from "../Products/Product";
 import {
@@ -7,51 +7,54 @@ import {
   spfThree,
   spfFour,
 } from "../../../assets/images/index";
+import { connect } from "react-redux";
+import { getproductList } from "../../../redux";
 
-const SpecialOffers = () => {
+const SpecialOffers = ({
+  product_error,
+  product_loading,
+  products,
+  product_single,
+  getproductList,
+}) => {
+  useEffect(() => {
+    getproductList();
+  }, []);
   return (
     <div className="w-full pb-20">
       <Heading heading="Special Offers" />
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lgl:grid-cols-3 xl:grid-cols-4 gap-10">
-        <Product
-          _id="1101"
-          img={spfOne}
-          productName="Cap for Boys"
-          price="35.00"
-          color="Blank and White"
-          badge={true}
-          des="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic excepturi quibusdam odio deleniti reprehenderit facilis."
-        />
-        <Product
-          _id="1102"
-          img={spfTwo}
-          productName="Tea Table"
-          price="180.00"
-          color="Gray"
-          badge={true}
-          des="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic excepturi quibusdam odio deleniti reprehenderit facilis."
-        />
-        <Product
-          _id="1103"
-          img={spfThree}
-          productName="Headphones"
-          price="25.00"
-          color="Mixed"
-          badge={true}
-          des="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic excepturi quibusdam odio deleniti reprehenderit facilis."
-        />
-        <Product
-          _id="1104"
-          img={spfFour}
-          productName="Sun glasses"
-          price="220.00"
-          color="Black"
-          badge={true}
-          des="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic excepturi quibusdam odio deleniti reprehenderit facilis."
-        />
+        {products?.map((product, i) => (
+          <div key={i} className="px-2">
+            <Product
+              _id={product?.id}
+              img={product?.image}
+              productName={product?.name}
+              price={product?.price}
+              color="Black"
+              badge={true}
+              des="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic excepturi quibusdam odio deleniti reprehenderit facilis."
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
-export default SpecialOffers;
+const mapStateToProps = (state) => {
+  return {
+    product_error: state.productReducer.product_error,
+    product_loading: state.productReducer.product_loading,
+    products: state.productReducer.products,
+    product_single: state.productReducer.product_single,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getproductList: () => dispatch(getproductList()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SpecialOffers);
